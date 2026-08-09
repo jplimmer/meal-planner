@@ -16,3 +16,10 @@ repos:
         language: system
         files: ^backend/
         pass_filenames: false
+
+      - id: biome
+        name: biome
+        entry: pnpm --dir frontend exec biome check --write --no-errors-on-unmatched
+        language: system
+        files: ^frontend/
+        pass_filenames: true

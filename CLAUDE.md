@@ -9,3 +9,5 @@ frontend, SQLite storage, self-hosted on a Raspberry Pi behind Tailscale.
 
 - Commit messages follow [Conventional Commits](https://www.conventionalcommits.org/).
 - PRs are squash-merged into `main`.
+- Code `TODO`s must reference a GitHub issue number (e.g. `TODO(#2): ...`), not
+  stand alone — keeps deferred work tracked instead of rotting in comments.
