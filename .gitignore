@@ -1,0 +1,41 @@
+# --- Python (backend) ---
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.pyright/
+*.egg-info/
+dist/
+build/
+
+# --- Node (frontend) ---
+node_modules/
+frontend/dist/
+.vite/
+pnpm-debug.log*
+
+# --- SQLite / runtime data ---
+*.db
+*.sqlite3
+
+# --- Env / secrets ---
+.env
+.env.*
+!.env.example
+
+# --- Docker ---
+docker-compose.override.yml
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+
+# --- Agents ---
+.claude/settings.local.json
+
+# --- Local-only docs ---
+planning.md
