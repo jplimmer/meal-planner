@@ -1,0 +1,22 @@
+# Recipes run with the working directory set to frontend/.
+
+# Check lint rules and formatting without changing anything.
+lint *FILES=".":
+    pnpm exec biome check {{FILES}}
+
+# Apply lint fixes and format in place.
+fix *FILES=".":
+    pnpm exec biome check --write {{FILES}}
+
+# Always whole-project — see the note in backend/justfile.
+typecheck:
+    pnpm run check
+
+test *ARGS:
+    pnpm exec vitest run {{ARGS}}
+
+dev:
+    pnpm run dev
+
+build:
+    pnpm run build

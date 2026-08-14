@@ -1,0 +1,50 @@
+version: 2
+
+updates:
+  - package-ecosystem: github-actions
+    directories:
+      - /
+      - /.github/actions/*
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+    cooldown:
+      default-days: 7
+    groups:
+      actions-minor-and-patch:
+        update-types: [minor, patch]
+      actions-major:
+        update-types: [major]
+
+  - package-ecosystem: npm
+    directory: /frontend
+    labels: [frontend, dependencies]
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+    cooldown:
+      default-days: 7
+    groups:
+      frontend-minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: uv
+    directory: /backend
+    labels: [backend, dependencies]
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+    cooldown:
+      default-days: 7
+    groups:
+      backend-minor-and-patch:
+        update-types: [minor, patch]
