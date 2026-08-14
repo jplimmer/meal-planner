@@ -1,25 +1,42 @@
-repos:
-  - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.16.2
-    hooks:
-      - id: ruff-check
-        args: [--fix]
-        files: ^backend/
-      - id: ruff-format
-        files: ^backend/
+# Every hook goes through `just`, so hooks and CI cannot drift apart.
+# Tool versions come from backend/uv.lock and frontend/pnpm-lock.yaml.
+#
+# The `fix` recipes rewrite files; pre-commit then fails the commit because
+# files changed, and you re-stage. CI runs the `lint` recipes instead, which
+# only check, so CI fails rather than silently rewriting.
+#
+# Do not set `pass_filenames: true` here. pre-commit passes paths relative to
+# the repo root, but module recipes run with the working directory set to
+# their own directory, so the paths never resolve and the hook passes without
+# checking anything.
 
+repos:
   - repo: local
     hooks:
-      - id: pyright
-        name: pyright
-        entry: uv run --project backend pyright
+      - id: backend-fix
+        name: ruff (backend)
+        entry: just backend fix
         language: system
         files: ^backend/
         pass_filenames: false
 
-      - id: biome
-        name: biome
-        entry: pnpm --dir frontend exec biome check --write --no-errors-on-unmatched
+      - id: backend-typecheck
+        name: pyright (backend)
+        entry: just backend typecheck
+        language: system
+        files: ^backend/
+        pass_filenames: false
+
+      - id: frontend-fix
+        name: biome (frontend)
+        entry: just frontend fix
         language: system
         files: ^frontend/
-        pass_filenames: true
+        pass_filenames: false
+
+      - id: frontend-typecheck
+        name: svelte-check (frontend)
+        entry: just frontend typecheck
+        language: system
+        files: ^frontend/
+        pass_filenames: false

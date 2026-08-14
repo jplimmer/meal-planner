@@ -1,0 +1,19 @@
+# Recipes run with the working directory set to backend/.
+
+# Check lint rules and formatting without changing anything.
+lint *FILES=".":
+    uv run ruff check {{FILES}}
+    uv run ruff format --check {{FILES}}
+
+# Apply lint fixes and format in place.
+fix *FILES=".":
+    uv run ruff check --fix {{FILES}}
+    uv run ruff format {{FILES}}
+
+# Always whole-project: a signature change breaks callers in files the
+# commit never touched, which checking a subset would miss.
+typecheck:
+    uv run pyright
+
+test *ARGS:
+    uv run pytest {{ARGS}}
