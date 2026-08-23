@@ -1,5 +1,6 @@
-# Every hook goes through `just`, so hooks and CI cannot drift apart.
-# Tool versions come from backend/uv.lock and frontend/pnpm-lock.yaml.
+# Every lint and typecheck hook goes through `just`, so hooks and CI cannot
+# drift apart. Tool versions come from backend/uv.lock and
+# frontend/pnpm-lock.yaml.
 #
 # The `fix` recipes rewrite files; pre-commit then fails the commit because
 # files changed, and you re-stage. CI runs the `lint` recipes instead, which
@@ -11,6 +12,12 @@
 # checking anything.
 
 repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c  # frozen: v6.0.0
+    hooks:
+      - id: no-commit-to-branch
+        fail_fast: true
+
   - repo: local
     hooks:
       - id: backend-fix
