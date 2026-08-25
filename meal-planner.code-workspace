@@ -1,0 +1,54 @@
+{
+	// Open this file rather than the repo folder. frontend/ needs to be its own
+	// workspace folder so the Biome extension finds frontend/biome.json and the
+	// binary in frontend/node_modules — searching up from the repo root finds
+	// neither.
+	"folders": [
+		{ "name": "meal-planner", "path": "." },
+		{ "name": "frontend", "path": "frontend" },
+		{ "name": "backend", "path": "backend" }
+	],
+
+	"settings": {
+		// Only frontend/ has a biome.json. Without this, biome activates in the
+		// other folders too and formats with its defaults, which silently
+		// disagrees with `just frontend fix`.
+		"biome.requireConfiguration": true,
+
+		// frontend/ and backend/ are top-level folders above, so hide the
+		// nested copies from the repo-root tree. This lives in the workspace
+		// rather than .vscode/settings.json so that opening a folder directly
+		// still shows everything.
+		"files.exclude": {
+			"frontend": true,
+			"backend": true
+		},
+
+		"editor.formatOnSave": true,
+
+		"[json]": { "editor.defaultFormatter": "biomejs.biome" },
+		"[jsonc]": { "editor.defaultFormatter": "biomejs.biome" },
+		"[javascript]": { "editor.defaultFormatter": "biomejs.biome" },
+		"[typescript]": { "editor.defaultFormatter": "biomejs.biome" },
+		"[css]": { "editor.defaultFormatter": "biomejs.biome" },
+		"[html]": { "editor.defaultFormatter": "biomejs.biome" },
+
+		// Biome formats Svelte markup and style blocks too, and is what
+		// `just frontend fix` runs. The Svelte extension still does diagnostics.
+		"[svelte]": { "editor.defaultFormatter": "biomejs.biome" },
+
+		"[python]": {
+			"editor.defaultFormatter": "charliermarsh.ruff",
+			"editor.codeActionsOnSave": {
+				"source.fixAll.ruff": "explicit",
+				"source.organizeImports.ruff": "explicit"
+			}
+		},
+
+		// Mirrors the `fix` recipes that pre-commit runs.
+		"editor.codeActionsOnSave": {
+			"source.fixAll.biome": "explicit",
+			"source.organizeImports.biome": "explicit"
+		}
+	}
+}

@@ -1,22 +1,10 @@
 {
-	// Scoped per language: a top-level `editor.defaultFormatter`
-	// would hand biome files it does not own, like Python.
-	"editor.formatOnSave": true,
-
-	"[json]": { "editor.defaultFormatter": "biomejs.biome" },
-	"[jsonc]": { "editor.defaultFormatter": "biomejs.biome" },
-	"[javascript]": { "editor.defaultFormatter": "biomejs.biome" },
-	"[typescript]": { "editor.defaultFormatter": "biomejs.biome" },
-	"[css]": { "editor.defaultFormatter": "biomejs.biome" },
-	"[html]": { "editor.defaultFormatter": "biomejs.biome" },
-
-	// Svelte files stay with the Svelte extension — biome's support for them
-	// is limited to embedded snippets.
-	"[svelte]": { "editor.defaultFormatter": "svelte.svelte-vscode" },
-
-	"[python]": { "editor.defaultFormatter": "charliermarsh.ruff" },
-
-	"editor.codeActionsOnSave": {
-		"source.organizeImports.biome": "explicit"
-	}
+	// Editor settings live in meal-planner.code-workspace — open that, not this
+	// folder. Anything here applies only to the repo-root folder, so it cannot
+	// reach files under frontend/ or backend/.
+	//
+	// Opened as a plain folder, biome cannot find frontend/biome.json or its
+	// binary. Staying inactive is better than formatting with defaults, which
+	// half-formats Svelte and fights `just frontend fix`.
+	"biome.requireConfiguration": true
 }

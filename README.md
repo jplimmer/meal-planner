@@ -9,6 +9,10 @@ Hosted on a Raspberry Pi via Docker, accessed over Tailscale.
 
 ## Development
 
+Open `meal-planner.code-workspace` rather than the repo folder. The Biome
+extension resolves its config and binary relative to the workspace folder, so
+`frontend/` needs to be one — opened at the repo root it finds neither.
+
 Each package has its own setup — see [backend/README.md](backend/README.md)
 (frontend to follow).
 
