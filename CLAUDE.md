@@ -11,3 +11,8 @@ frontend, SQLite storage, self-hosted on a Raspberry Pi behind Tailscale.
 - PRs are squash-merged into `main`.
 - Code `TODO`s must reference a GitHub issue number (e.g. `TODO(#2): ...`), not
   stand alone — keeps deferred work tracked instead of rotting in comments.
+- Dependency ranges are tiered: exact for formatters and linters, as tight as
+  versioning allows for type checkers, ecosystem default for everything else.
+  Lockfiles are committed, so this governs updates, not reproducibility.
+- Toolchain versions live in the manifests, not CI — Node and pnpm in
+  `frontend/package.json`, Python in `backend/pyproject.toml`.

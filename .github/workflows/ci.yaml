@@ -9,6 +9,9 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -18,27 +21,31 @@ jobs:
         task: [lint, typecheck, test]
 
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      - uses: extractions/setup-just@v4
+      - uses: taiki-e/install-action@6cd13508893c0e7eab5f273c2575d3859bd7229a # v2.86.6
+        with:
+          tool: just
 
-      - uses: astral-sh/setup-uv@v10.0.1
+      - uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
         with:
           working-directory: backend
           enable-cache: true
 
-      - uses: pnpm/action-setup@v6
+      # The pnpm version comes from `packageManager` and Node from
+      # `devEngines.runtime`, both in frontend/package.json.
+      - uses: pnpm/setup@84cb39b217b10273981911c288cd62326dc7c6d2 # v2.0.2
         with:
-          package_json_file: frontend/package.json
-
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 22
-          cache: pnpm
+          package-json-file: frontend/package.json
+          cache: true
           cache-dependency-path: frontend/pnpm-lock.yaml
+          # Auto-install ignores package-json-file when choosing a working
+          # directory and runs `pnpm install` at the repo root, which has no
+          # manifest. Install explicitly below instead.
+          install: false
 
       - name: Install backend dependencies
-        run: uv sync --project backend
+        run: uv sync --locked --project backend
 
       - name: Install frontend dependencies
         run: pnpm --dir frontend install --frozen-lockfile

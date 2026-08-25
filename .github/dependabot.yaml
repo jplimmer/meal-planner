@@ -16,8 +16,6 @@ updates:
     groups:
       actions-minor-and-patch:
         update-types: [minor, patch]
-      actions-major:
-        update-types: [major]
 
   - package-ecosystem: npm
     directory: /frontend
@@ -32,6 +30,20 @@ updates:
       default-days: 7
     groups:
       frontend-minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: pre-commit
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+    cooldown:
+      default-days: 7
+    groups:
+      pre-commit-minor-and-patch:
         update-types: [minor, patch]
 
   - package-ecosystem: uv

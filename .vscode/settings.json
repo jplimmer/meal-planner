@@ -1,0 +1,10 @@
+{
+	// Editor settings live in meal-planner.code-workspace — open that, not this
+	// folder. Anything here applies only to the repo-root folder, so it cannot
+	// reach files under frontend/ or backend/.
+	//
+	// Opened as a plain folder, biome cannot find frontend/biome.json or its
+	// binary. Staying inactive is better than formatting with defaults, which
+	// half-formats Svelte and fights `just frontend fix`.
+	"biome.requireConfiguration": true
+}
