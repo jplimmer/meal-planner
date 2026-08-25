@@ -8,7 +8,7 @@
 		"runtime": {
 			"name": "node",
 			"version": "26",
-			"onFail": "error"
+			"onFail": "download"
 		}
 	},
 	"scripts": {
