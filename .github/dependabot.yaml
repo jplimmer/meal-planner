@@ -32,6 +32,20 @@ updates:
       frontend-minor-and-patch:
         update-types: [minor, patch]
 
+  - package-ecosystem: pre-commit
+    directory: /
+    schedule:
+      interval: monthly
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: chore
+      include: scope
+    cooldown:
+      default-days: 7
+    groups:
+      pre-commit-minor-and-patch:
+        update-types: [minor, patch]
+
   - package-ecosystem: uv
     directory: /backend
     labels: [backend, dependencies]
