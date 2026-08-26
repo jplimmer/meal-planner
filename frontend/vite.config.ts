@@ -8,6 +8,12 @@ export default defineConfig({
 		svelte(),
 		VitePWA({
 			registerType: "autoUpdate",
+			workbox: {
+				// Navigations are answered from the precached shell, which would
+				// hide /api/docs once installed. fetch() is unaffected, so no
+				// test catches this.
+				navigateFallbackDenylist: [/^\/api\//],
+			},
 			devOptions: {
 				enabled: true,
 			},
@@ -30,6 +36,15 @@ export default defineConfig({
 			},
 		}),
 	],
+	server: {
+		// The SPA calls relative /api paths. In production FastAPI serves both
+		// the SPA and the API from one origin; this recreates that in
+		// development, so no code needs an environment-dependent base URL and
+		// the backend needs no CORS middleware.
+		proxy: {
+			"/api": "http://127.0.0.1:8000",
+		},
+	},
 	resolve: {
 		conditions: ["browser"],
 	},
