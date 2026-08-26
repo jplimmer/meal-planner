@@ -17,3 +17,9 @@ typecheck:
 
 test *ARGS:
     uv run pytest {{ARGS}}
+
+# Serve the API on http://127.0.0.1:8000 with autoreload, plus the built SPA
+# from frontend/dist if `just frontend build` has produced one. Watches src/
+# only, so the reloader ignores .venv and the caches.
+dev:
+    MEAL_PLANNER_STATIC_DIR=../frontend/dist uv run uvicorn app.main:app --reload --reload-dir src

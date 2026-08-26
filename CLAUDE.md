@@ -16,3 +16,6 @@ frontend, SQLite storage, self-hosted on a Raspberry Pi behind Tailscale.
   Lockfiles are committed, so this governs updates, not reproducibility.
 - Toolchain versions live in the manifests, not CI — Node and pnpm in
   `frontend/package.json`, Python in `backend/pyproject.toml`.
+- Every JSON route lives under `/api`; every other path is served the SPA's
+  `index.html`. API routers must be registered before the SPA catch-all, since
+  routes match in registration order and the catch-all matches everything.
