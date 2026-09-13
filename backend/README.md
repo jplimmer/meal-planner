@@ -7,8 +7,12 @@ built frontend SPA from a single process. See the
 ## Prerequisites
 
 - [uv](https://docs.astral.sh/uv/getting-started/installation/) — manages the
-  Python interpreter (3.14) and dependencies, nothing else needed
+  Python interpreter (the version pinned in `pyproject.toml`) and dependencies,
+  nothing else needed
 - [just](https://just.systems) — runs every lint/typecheck/test recipe
+
+Commands below run from `backend/`. From the repo root, add the module name:
+`just dev` becomes `just backend dev`.
 
 ## Setup
 
@@ -16,25 +20,24 @@ built frontend SPA from a single process. See the
 
 ## Running
 
-    just backend dev
+    just dev
 
 Serves <http://127.0.0.1:8000> with autoreload. Interactive API docs are at
 `/api/docs`.
 
-For frontend work, run `just frontend dev` alongside it in a second terminal
-and use the Vite dev server on <http://localhost:5173> — it proxies `/api` to
-this process, so the SPA calls the same relative URLs in development as in
-production.
+For frontend work, run `just dev` in `frontend/` alongside it and use the Vite
+dev server on <http://localhost:5173> — it proxies `/api` to this process, so
+the SPA calls the same relative URLs in development as in production.
 
 ## Common commands
 
 Every check goes through `just`, so hooks, CI and local runs cannot drift
 apart:
 
-    just backend lint          # ruff check + format --check
-    just backend fix           # ruff check --fix + format
-    just backend typecheck     # pyright, whole project
-    just backend test          # pytest
+    just lint          # ruff check + format --check
+    just fix           # ruff check --fix + format
+    just typecheck     # pyright, whole project
+    just test          # pytest
 
 ## Layout
 
@@ -54,6 +57,9 @@ catch-all matches everything.
 
 An unmatched `/api/...` path returns a JSON 404 rather than falling back to
 `index.html`, so a typo'd fetch fails loudly instead of receiving HTML.
+
+Why FastAPI serves the SPA at all, rather than a separate frontend server, is
+recorded in [ADR 0002](../docs/adr/0002-static-spa-served-by-fastapi.md).
 
 ### Configuration
 
