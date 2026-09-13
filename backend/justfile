@@ -1,25 +1,28 @@
 # Recipes run with the working directory set to backend/.
 
-# Check lint rules and formatting without changing anything.
+[doc("Check lint rules and formatting without changing anything.")]
 lint *FILES=".":
     uv run ruff check {{FILES}}
     uv run ruff format --check {{FILES}}
 
-# Apply lint fixes and format in place.
+[doc("Apply lint fixes and format in place.")]
 fix *FILES=".":
     uv run ruff check --fix {{FILES}}
     uv run ruff format {{FILES}}
 
 # Always whole-project: a signature change breaks callers in files the
 # commit never touched, which checking a subset would miss.
+[doc("Type check the whole project.")]
 typecheck:
     uv run pyright
 
+[doc("Run the tests; extra arguments go to pytest.")]
 test *ARGS:
     uv run pytest {{ARGS}}
 
-# Serve the API on http://127.0.0.1:8000 with autoreload, plus the built SPA
-# from frontend/dist if `just frontend build` has produced one. Watches src/
-# only, so the reloader ignores .venv and the caches.
+# Also serves the built SPA from frontend/dist if `just frontend build` has
+# produced one. Watches src/ only, so the reloader ignores .venv and the caches.
+# The port is also the proxy target in frontend/vite.config.ts.
+[doc("Serve the API with autoreload.")]
 dev:
-    MEAL_PLANNER_STATIC_DIR=../frontend/dist uv run uvicorn app.main:app --reload --reload-dir src
+    MEAL_PLANNER_STATIC_DIR=../frontend/dist uv run uvicorn app.main:app --port 8000 --reload --reload-dir src

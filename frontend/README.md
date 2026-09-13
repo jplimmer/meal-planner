@@ -1,47 +1,61 @@
-# Svelte + TS + Vite
+# meal-planner-frontend
 
-This template should help get you started developing with Svelte and TypeScript in Vite.
+Svelte SPA for meal-planner, built by Vite into static files that the backend
+serves in production. See the [repo root README](../README.md) for the overall
+project, and [ADR 0002](../docs/adr/0002-static-spa-served-by-fastapi.md) for
+why it is a static SPA rather than SvelteKit or a separate server.
 
-## Recommended IDE Setup
+## Prerequisites
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+- [pnpm](https://pnpm.io/installation) — the version is pinned by
+  `packageManager` in `package.json`, and pnpm downloads the Node version set
+  by `devEngines.runtime` if it isn't installed
+- [just](https://just.systems) — runs every lint/typecheck/test recipe
 
-## Need an official Svelte framework?
+Commands below run from `frontend/`. From the repo root, add the module name:
+`just dev` becomes `just frontend dev`.
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
+## Setup
 
-## Technical considerations
+    pnpm install
 
-**Why use this over SvelteKit?**
+## Running
 
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
+    just dev
 
-This template contains as little as possible to get started with Vite + TypeScript + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
+Serves <http://localhost:5173> with hot reload. The dev server proxies `/api`
+to the backend, so run `just dev` in `backend/` alongside it — the SPA calls
+the same relative URLs in development as in production.
 
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
+    just build
 
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
+Writes the production build to `dist/`. `just dev` in `backend/` serves it on
+<http://127.0.0.1:8000>, which is the closest local match to production.
 
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
+## Common commands
 
-**Why include `.vscode/extensions.json`?**
+Every check goes through `just`, so hooks, CI and local runs cannot drift
+apart:
 
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
+    just lint          # biome check
+    just fix           # biome check --write
+    just typecheck     # svelte-check + tsc, whole project
+    just test          # vitest
 
-**Why enable `allowJs` in the TS template?**
+## Layout
 
-While `allowJs: false` would indeed prevent the use of `.js` files in the project, it does not prevent the use of JavaScript syntax in `.svelte` files. In addition, it would force `checkJs: false`, bringing the worst of both worlds: not being able to guarantee the entire codebase is TypeScript, and also having worse typechecking for the existing JavaScript. In addition, there are valid use cases in which a mixed codebase may be relevant.
+    src/
+      main.ts        mounts App into index.html
+      App.svelte     the root component
+      lib/api.ts     typed fetch wrappers for the backend's /api routes
+    vite.config.ts   Svelte, PWA and test config, plus the /api dev proxy
+    vitest-setup.ts  jest-dom matchers and per-test cleanup
 
-**Why is HMR not preserving my local component state?**
+### PWA
 
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/rixo/svelte-hmr#svelte-hmr).
+`vite-plugin-pwa` generates the manifest and service worker, and is enabled in
+the dev server too. A service worker can keep serving a cached app shell after
+a change, so if the page looks stale, unregister it in the browser's dev tools.
 
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
-
-```ts
-// store.ts
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
-```
+Navigations under `/api/` are excluded from the service worker's fallback to
+the app shell, so `/api/docs` stays reachable once the app is installed.

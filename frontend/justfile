@@ -1,22 +1,26 @@
 # Recipes run with the working directory set to frontend/.
 
-# Check lint rules and formatting without changing anything.
+[doc("Check lint rules and formatting without changing anything.")]
 lint *FILES=".":
     pnpm exec biome check {{FILES}}
 
-# Apply lint fixes and format in place.
+[doc("Apply lint fixes and format in place.")]
 fix *FILES=".":
     pnpm exec biome check --write {{FILES}}
 
 # Always whole-project — see the note in backend/justfile.
+[doc("Type check the whole project.")]
 typecheck:
     pnpm run check
 
+[doc("Run the tests once; extra arguments go to vitest.")]
 test *ARGS:
     pnpm exec vitest run {{ARGS}}
 
+[doc("Serve the SPA with hot reload, proxying /api to the backend.")]
 dev:
     pnpm run dev
 
+[doc("Build the SPA into dist/.")]
 build:
     pnpm run build
