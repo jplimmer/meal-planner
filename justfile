@@ -7,25 +7,26 @@ set default-list := true
 mod backend
 mod frontend
 
-# Everything CI gates on.
+[doc("Everything CI gates on.")]
 check: lint typecheck test
 
-# Lint rules and formatting, both stacks.
+[doc("Lint rules and formatting, both stacks.")]
 lint:
     just backend lint
     just frontend lint
 
-# Type check, both stacks.
+[doc("Type check, both stacks.")]
 typecheck:
     just backend typecheck
     just frontend typecheck
 
-# Unit tests, both stacks.
+[doc("Unit tests, both stacks.")]
 test:
     just backend test
     just frontend test
 
-# Apply every autofix both stacks offer. Used by the pre-commit hooks.
+# Used by the pre-commit hooks.
+[doc("Apply every autofix both stacks offer.")]
 fix:
     just backend fix
     just frontend fix

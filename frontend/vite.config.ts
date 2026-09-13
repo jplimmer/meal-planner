@@ -37,10 +37,16 @@ export default defineConfig({
 		}),
 	],
 	server: {
+		// Fail if the port is taken rather than moving to the next free one: a
+		// different port is a different origin, with its own service worker
+		// and storage.
+		port: 5173,
+		strictPort: true,
 		// The SPA calls relative /api paths. In production FastAPI serves both
 		// the SPA and the API from one origin; this recreates that in
 		// development, so no code needs an environment-dependent base URL and
-		// the backend needs no CORS middleware.
+		// the backend needs no CORS middleware. The port matches `just dev` in
+		// backend/justfile.
 		proxy: {
 			"/api": "http://127.0.0.1:8000",
 		},
