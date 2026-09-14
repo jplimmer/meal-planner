@@ -33,22 +33,16 @@ jobs:
           enable-cache: true
 
       # The pnpm version comes from `packageManager` and Node from
-      # `devEngines.runtime`, both in frontend/package.json.
-      - uses: pnpm/setup@84cb39b217b10273981911c288cd62326dc7c6d2 # v2.0.2
+      # `devEngines.runtime`, both in frontend/package.json. Also installs
+      # frontend dependencies, failing if the lockfile is missing or stale.
+      - uses: pnpm/setup@703c52620218391530e48b9e8870d5c0082e1b9b # v2.1.0
         with:
-          package-json-file: frontend/package.json
+          working-directory: frontend
           cache: true
-          cache-dependency-path: frontend/pnpm-lock.yaml
-          # Auto-install ignores package-json-file when choosing a working
-          # directory and runs `pnpm install` at the repo root, which has no
-          # manifest. Install explicitly below instead.
-          install: false
+          require-lockfile: true
 
       - name: Install backend dependencies
         run: uv sync --locked --project backend
-
-      - name: Install frontend dependencies
-        run: pnpm --dir frontend install --frozen-lockfile
 
       # The same recipe a developer runs locally, and the same one the
       # pre-commit hooks call.
