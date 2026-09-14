@@ -1,5 +1,8 @@
 # Recipes run with the working directory set to frontend/.
 
+[doc("Everything CI gates on for the frontend.")]
+check: lint typecheck test
+
 [doc("Check lint rules and formatting without changing anything.")]
 lint *FILES=".":
     pnpm exec biome check {{FILES}}
@@ -8,19 +11,25 @@ lint *FILES=".":
 fix *FILES=".":
     pnpm exec biome check --write {{FILES}}
 
-# Always whole-project — see the note in backend/justfile.
+# Always whole-project — see the note in backend/justfile. svelte-check covers
+# the app; tsc covers vite.config.ts, which the app tsconfig doesn't include.
 [doc("Type check the whole project.")]
 typecheck:
-    pnpm run check
+    pnpm exec svelte-check --tsconfig ./tsconfig.app.json
+    pnpm exec tsc -p tsconfig.node.json
 
 [doc("Run the tests once; extra arguments go to vitest.")]
 test *ARGS:
     pnpm exec vitest run {{ARGS}}
 
+[doc("Re-run the tests on every change; extra arguments go to vitest.")]
+test-watch *ARGS:
+    pnpm exec vitest {{ARGS}}
+
 [doc("Serve the SPA with hot reload, proxying /api to the backend.")]
 dev:
-    pnpm run dev
+    pnpm exec vite
 
 [doc("Build the SPA into dist/.")]
 build:
-    pnpm run build
+    pnpm exec vite build

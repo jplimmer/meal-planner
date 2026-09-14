@@ -15,8 +15,8 @@ ASSET_MARKER = "meal planner asset"
 def static_dir(tmp_path: Path) -> Path:
     """A stand-in for `frontend/dist`.
 
-    Backend tests never depend on `pnpm build` having run, which keeps the
-    backend CI job independent of the frontend.
+    Backend tests never depend on `just frontend build` having run, which
+    keeps the backend CI job independent of the frontend.
     """
     (tmp_path / "index.html").write_text(f"<!doctype html>{INDEX_MARKER}")
     assets = tmp_path / "assets"

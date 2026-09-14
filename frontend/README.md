@@ -10,7 +10,7 @@ why it is a static SPA rather than SvelteKit or a separate server.
 - [pnpm](https://pnpm.io/installation) — the version is pinned by
   `packageManager` in `package.json`, and pnpm downloads the Node version set
   by `devEngines.runtime` if it isn't installed
-- [just](https://just.systems) — runs every lint/typecheck/test recipe
+- [just](https://just.systems) — runs every task in this project
 
 Commands below run from `frontend/`. From the repo root, add the module name:
 `just dev` becomes `just frontend dev`.
@@ -34,13 +34,15 @@ Writes the production build to `dist/`. `just dev` in `backend/` serves it on
 
 ## Common commands
 
-Every check goes through `just`, so hooks, CI and local runs cannot drift
-apart:
+Every task is a `just` recipe, so hooks, CI and local runs cannot drift apart.
+`package.json` has no scripts:
 
+    just check         # lint + typecheck + test, as CI runs them
     just lint          # biome check
     just fix           # biome check --write
     just typecheck     # svelte-check + tsc, whole project
-    just test          # vitest
+    just test          # vitest, once
+    just test-watch    # vitest, re-running on change
 
 ## Layout
 
