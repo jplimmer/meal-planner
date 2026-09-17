@@ -18,8 +18,9 @@ reachable except through the tailnet — see
 
 ## Prerequisites
 
-- [just](https://just.systems) — runs every lint, typecheck and test command
-- [pre-commit](https://pre-commit.com/) — runs those checks on each commit
+- [just](https://just.systems) — runs every task in this repo
+- [pre-commit](https://pre-commit.com/) — runs the formatters and type checks
+  on each commit
 - Each package's own prerequisites — see [backend/README.md](backend/README.md)
   and [frontend/README.md](frontend/README.md)
 

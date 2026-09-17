@@ -9,7 +9,7 @@ built frontend SPA from a single process. See the
 - [uv](https://docs.astral.sh/uv/getting-started/installation/) — manages the
   Python interpreter (the version pinned in `pyproject.toml`) and dependencies,
   nothing else needed
-- [just](https://just.systems) — runs every lint/typecheck/test recipe
+- [just](https://just.systems) — runs every task in this project
 
 Commands below run from `backend/`. From the repo root, add the module name:
 `just dev` becomes `just backend dev`.
@@ -34,6 +34,7 @@ the SPA calls the same relative URLs in development as in production.
 Every check goes through `just`, so hooks, CI and local runs cannot drift
 apart:
 
+    just check         # lint + typecheck + test, as CI runs them
     just lint          # ruff check + format --check
     just fix           # ruff check --fix + format
     just typecheck     # pyright, whole project
