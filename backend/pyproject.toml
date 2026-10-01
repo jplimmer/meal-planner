@@ -24,9 +24,9 @@ dev = [
     "httpx2>=2.12.0",
     # pyright and ruff are pinned exactly — see the version-range convention
     # in CLAUDE.md.
-    "pyright==1.1.411",
+    "pyright==1.1.414",
     "pytest>=9.1.1",
-    "ruff==0.16.2",
+    "ruff==0.16.8",
 ]
 
 [tool.ruff]
